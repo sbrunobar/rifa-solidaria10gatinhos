@@ -1,7 +1,7 @@
 // --- Configuration ---
 const TOTAL_NUMBERS = 70;
 const PIX_KEY = "21979586608"; // User provided PIX Key
-const WHATSAPP_NUMBER = "5521999999999"; // Organizer's number (with country code, no +, no spaces)
+const WHATSAPP_NUMBER = "5521979586608"; // Organizer's number (with country code, no +, no spaces)
 
 // --- Google Sheets Integration ---
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxKVqIVX0N1ObkQS1z-tRYXeQaJP08iesNusysfq1He4YSlwGqY4_2w5UdkP1qk9h1-/exec";
