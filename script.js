@@ -4,7 +4,7 @@ const PIX_KEY = "21979586608"; // User provided PIX Key
 const WHATSAPP_NUMBER = "5521979586608"; // Organizer's number (with country code, no +, no spaces)
 
 // --- Google Sheets Integration ---
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxKVqIVX0N1ObkQS1z-tRYXeQaJP08iesNusysfq1He4YSlwGqY4_2w5UdkP1qk9h1-/exec";
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyFXXwwnBKuinGieoagqBd6wW309fJWLLyxORHHzcrDQviaeFRR5_rpCkrUWIb9cfap/exec";
 const SOLD_NUMBERS = [];
 
 // --- State ---
