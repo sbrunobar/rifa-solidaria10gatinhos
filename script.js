@@ -48,7 +48,14 @@ async function loadAndRenderGrid() {
         SOLD_NUMBERS.length = 0;
         data.forEach(row => {
             if (row.Numero_Rifa) {
-                SOLD_NUMBERS.push(Number(row.Numero_Rifa));
+                // Treats cases like "8" or "08, 26, 35, 47, 60"
+                const nums = String(row.Numero_Rifa).split(',');
+                nums.forEach(n => {
+                    const parsedNum = Number(n.trim());
+                    if (!isNaN(parsedNum) && parsedNum > 0) {
+                        SOLD_NUMBERS.push(parsedNum);
+                    }
+                });
             }
         });
     } catch (error) {
