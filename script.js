@@ -8,7 +8,7 @@ const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyFXXwwnBKuin
 const SOLD_NUMBERS = [];
 
 // --- State ---
-let currentSelectedNumber = null;
+let selectedNumbers = []; // Store multiple selected numbers
 let userData = {
     name: "",
     whatsapp: ""
@@ -21,6 +21,7 @@ const btnCloseModal = document.getElementById('btnCloseModal');
 const userDataForm = document.getElementById('userDataForm');
 const modalNumberSpan = document.getElementById('modalNumberSpan');
 const paymentSection = document.getElementById('payment');
+const checkoutFloatingBtn = document.getElementById('checkoutFloatingBtn');
 
 // Payment Displays
 const userNameDisplay = document.getElementById('userNameDisplay');
@@ -83,21 +84,50 @@ function initGrid() {
 }
 
 function handleNumberClick(btnElement, num) {
-    // If it's already selected by the user, we can toggle off or ignore.
-    // Let's assume selecting a new number just opens modal for confirmation.
+    // If it's already sold, do nothing
+    if (SOLD_NUMBERS.includes(Number(num))) return;
 
-    currentSelectedNumber = num;
+    const index = selectedNumbers.indexOf(num);
 
+    if (index > -1) {
+        // Deselect
+        selectedNumbers.splice(index, 1);
+        btnElement.classList.remove('selected');
+    } else {
+        // Select
+        selectedNumbers.push(num);
+        btnElement.classList.add('selected');
+    }
+
+    // Sort numbers for display
+    selectedNumbers.sort((a, b) => parseInt(a) - parseInt(b));
+
+    updateFloatingCheckout();
+}
+
+function updateFloatingCheckout() {
+    if (selectedNumbers.length > 0) {
+        checkoutFloatingBtn.classList.add('active');
+        const spanText = checkoutFloatingBtn.querySelector('span');
+        const total = selectedNumbers.length * 10;
+        spanText.innerHTML = `Comprar ${selectedNumbers.length} Número(s) - <strong>R$ ${total},00</strong>`;
+    } else {
+        checkoutFloatingBtn.classList.remove('active');
+    }
+}
+
+// Show Modal when floating button clicked
+checkoutFloatingBtn.addEventListener('click', () => {
     // Reset modal form
     document.getElementById('userName').value = userData.name;
     document.getElementById('userWhatsapp').value = userData.whatsapp;
 
     // Update modal text
-    modalNumberSpan.textContent = num;
+    modalNumberSpan.textContent = selectedNumbers.join(", ");
 
     // Show Modal
     modalOverlay.classList.add('active');
-}
+});
 
 // --- Modal Logic ---
 btnCloseModal.addEventListener('click', () => {
@@ -132,7 +162,9 @@ userDataForm.addEventListener('submit', async (e) => {
     const formData = new URLSearchParams();
     formData.append('Nome', userData.name);
     formData.append('WhatsApp', userData.whatsapp);
-    formData.append('Numero_Rifa', currentSelectedNumber);
+    // Join all numbers into a single string like "15, 23, 42" for the spreadsheet
+    const numbersToSubmit = selectedNumbers.join(", ");
+    formData.append('Numero_Rifa', numbersToSubmit);
 
     try {
         await fetch(GOOGLE_SHEETS_URL, {
@@ -143,8 +175,10 @@ userDataForm.addEventListener('submit', async (e) => {
             },
             mode: 'no-cors' // Prevent redirect CORS error blocking JS execution
         });
-        // Locally lock the number for instant feedback
-        SOLD_NUMBERS.push(Number(currentSelectedNumber));
+
+        // Locally lock the numbers for instant feedback
+        selectedNumbers.forEach(n => SOLD_NUMBERS.push(Number(n)));
+
     } catch (error) {
         console.error("Erro ao registrar na planilha:", error);
     }
@@ -166,11 +200,13 @@ function updateGridVisuals() {
     document.querySelectorAll('.num-btn').forEach(btn => btn.classList.remove('selected'));
 
     // Select the current one
-    if (currentSelectedNumber) {
-        const activeBtn = document.querySelector(`.num-btn[data-num="${currentSelectedNumber}"]`);
-        if (activeBtn) {
-            activeBtn.classList.add('selected');
-        }
+    if (selectedNumbers.length > 0) {
+        selectedNumbers.forEach(num => {
+            const activeBtn = document.querySelector(`.num-btn[data-num="${num}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('selected');
+            }
+        });
     }
 }
 
@@ -178,10 +214,15 @@ function updateGridVisuals() {
 function activatePaymentSection() {
     // Fill the payment specific info
     userNameDisplay.textContent = userData.name.split(' ')[0]; // First name
-    selectedNumberDisplay.textContent = currentSelectedNumber;
+    selectedNumberDisplay.textContent = selectedNumbers.join(", ");
+
+    // Update PIX value dynamically in the text
+    const totalValue = selectedNumbers.length * 10;
+    const pixHeader = paymentSection.querySelector('h3');
+    pixHeader.textContent = `Faça o PIX de R$ ${totalValue},00`;
 
     // Enable and update WhatsApp link
-    updateWhatsAppLink();
+    updateWhatsAppLink(totalValue);
 
     // Show sections and scroll
     paymentSection.classList.add('active');
@@ -217,9 +258,10 @@ function setupPix() {
     });
 }
 
-function updateWhatsAppLink() {
+function updateWhatsAppLink(totalValue) {
     // Construct dynamic message
-    const msg = `Olá! Sou *${userData.name}* (tel: ${userData.whatsapp}).\nEscolhi o número *${currentSelectedNumber}* na rifa dos Gatinhos Macaé.\n\nSegue abaixo o meu comprovante do PIX:`;
+    const msgs = selectedNumbers.length > 1 ? "os números" : "o número";
+    const msg = `Olá! Sou *${userData.name}* (tel: ${userData.whatsapp}).\nEscolhi ${msgs} *${selectedNumbers.join(", ")}* na rifa dos Gatinhos Macaé.\nO valor total deu R$ ${totalValue},00.\n\nSegue abaixo o meu comprovante do PIX:`;
     const encodedMsg = encodeURIComponent(msg);
 
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMsg}`;

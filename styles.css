@@ -582,6 +582,10 @@ h3 {
     margin-top: 0.5rem;
 }
 
+.copy-feedback.active {
+    display: inline-block;
+}
+
 .copy-feedback.show {
     display: block;
     animation: fadeInOut 2s forwards;
@@ -804,4 +808,45 @@ h3 {
     border-top: 1px solid #374151;
     padding-top: 2rem;
     margin-top: 2rem;
+}
+
+/* --- Floating Checkout Button --- */
+.checkout-floating-btn {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
+    cursor: pointer;
+    z-index: 99;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.checkout-floating-btn.active {
+    bottom: 30px;
+}
+
+.checkout-floating-btn:hover {
+    transform: translateX(-50%) translateY(-5px);
+    box-shadow: 0 15px 40px rgba(249, 115, 22, 0.5);
+}
+
+.checkout-floating-btn span {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.checkout-floating-btn strong {
+    font-weight: 800;
+}
+
+.checkout-floating-btn i {
+    font-size: 1.5rem;
 }
