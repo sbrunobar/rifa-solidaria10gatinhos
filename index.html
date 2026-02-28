@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missão Macaé: Ajude 10 Gatinhos! 🐾</title>
+    <meta name="description"
+        content="Ajude a pagar o transporte de uma família de 10 gatos para uma ONG em Macaé. Participe da nossa rifa solidária!">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container text-center">
+            <div class="badge-urgent"><i class="ph-fill ph-warning-circle"></i> OPERAÇÃO MACAÉ</div>
+            <h1 class="hero-title">Missão Macaé: Ajude a transportar <span class="highlight">10 gatinhos</span>
+                resgatados!</h1>
+            <p class="hero-subtitle">Tiramos uma mãezinha e seus 9 filhotes de uma situação de risco extremo na Cidade
+                de Deus. Agora, precisamos da sua ajuda para pagar o Taxi Dog e levá-los para um lar seguro em uma ONG
+                em Macaé.</p>
+            <a href="#numbers" class="btn btn-primary btn-large btn-pulse">
+                Quero Escolher Meu Número (R$ 10) <i class="ph-bold ph-arrow-down"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- The Story -->
+    <section class="story py-section" id="story">
+        <div class="container">
+            <div class="story-grid">
+                <div class="story-image-wrapper carousel-container">
+                    <div class="carousel-track" id="carouselTrack">
+                        <img src="gato1.png" alt="Gatinhos resgatados 1" class="carousel-slide active">
+                        <img src="gato2.png" alt="Gatinhos resgatados 2" class="carousel-slide">
+                        <img src="gato3.png" alt="Gatinhos resgatados 3" class="carousel-slide">
+                        <img src="gato4.png" alt="Gatinhos resgatados 4" class="carousel-slide">
+                    </div>
+                    <div class="img-caption">A Família Resgatada</div>
+                </div>
+                <div class="story-content">
+                    <h2>A História do Resgate</h2>
+                    <p>Fizemos o resgate na Cidade de Deus, mas não temos como manter todos. A boa notícia é que uma ONG
+                        maravilhosa em Macaé aceitou receber a família inteira!</p>
+                    <div class="alert-box">
+                        <i class="ph-fill ph-target"></i>
+                        <p><strong>Meta urgente: R$ 700,00.</strong> Todo o dinheiro arrecadado nesta rifa (70 números x
+                            R$ 10) será 100% destinado ao pagamento do transporte especializado (Taxi Dog) para garantir
+                            que eles cheguem em segurança ao novo lar em Macaé.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Banner -->
+    <section class="info-banner" aria-label="Informações da Rifa">
+        <div class="container info-flex">
+            <div class="info-card">
+                <div class="info-icon"><i class="ph-fill ph-ticket"></i></div>
+                <div class="info-text">
+                    <span class="info-label">Valor do Número</span>
+                    <span class="info-value">R$ 10,00</span>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="ph-fill ph-list-numbers"></i></div>
+                <div class="info-text">
+                    <span class="info-label">Total de Números</span>
+                    <span class="info-value">70</span>
+                </div>
+            </div>
+            <div class="info-card prize-card">
+                <div class="info-icon"><i class="ph-fill ph-gift"></i></div>
+                <div class="info-text">
+                    <span class="info-label">Prêmio</span>
+                    <span class="info-value highlight-prize">Copo Térmico 1,18L com Alça e Canudo (Aço Inox)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Choose Your Number Section -->
+    <section class="numbers-section py-section bg-light" id="numbers">
+        <div class="container text-center">
+            <h2>Escolha seu Número da Sorte</h2>
+            <p class="section-desc">Clique em um número disponível abaixo para reservar. Após escolher, você será
+                direcionado para o pagamento.</p>
+
+            <div class="legend">
+                <div class="legend-item"><span class="dot available"></span> Disponível</div>
+                <div class="legend-item"><span class="dot selected-dot"></span> Selecionado</div>
+                <div class="legend-item"><span class="dot sold-dot"></span> Vendido</div>
+            </div>
+
+            <div class="number-grid" id="numberGrid">
+                <!-- Numbers inserted via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment & WhatsApp Section (Initially hidden or scrolled to) -->
+    <section class="payment-section py-section" id="payment">
+        <div class="container">
+            <div class="payment-card">
+                <div class="payment-header text-center">
+                    <h2>Quase lá, <span id="userNameDisplay">Amigo(a)</span>! 🥳</h2>
+                    <p>Você escolheu o número: <strong class="badge-number" id="selectedNumberDisplay">--</strong></p>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h3>Faça o PIX de R$ 10,00</h3>
+                            <p>Use a chave aleatória/CPF abaixo para realizar o pagamento.</p>
+                            <div class="pix-box">
+                                <input type="text" id="pixKey" value="SUA_CHAVE_PIX_AQUI_12345" readonly>
+                                <button id="btnCopyPix" class="btn btn-secondary">
+                                    <i class="ph-bold ph-copy"></i> Copiar
+                                </button>
+                            </div>
+                            <span class="copy-feedback" id="copyFeedback">Chave copiada!</span>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h3>Envie o Comprovante</h3>
+                            <p>Clique no botão abaixo para me mandar o comprovante pelo WhatsApp e validar seu número na
+                                cartela!</p>
+                            <a href="#" id="btnWhatsApp" target="_blank" class="btn btn-whatsapp btn-large disabled">
+                                <i class="ph-fill ph-whatsapp-logo"></i> Enviar Comprovante
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for User Data -->
+    <div class="modal-overlay" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ótima escolha! 🍀</h3>
+                <button class="btn-close" id="btnCloseModal"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Você selecionou o número <strong id="modalNumberSpan"></strong>. Por favor, preencha seus dados para
+                    reservar.</p>
+                <form id="userDataForm">
+                    <div class="input-group">
+                        <label for="userName">Seu Nome Completo</label>
+                        <input type="text" id="userName" required placeholder="Ex: João da Silva">
+                    </div>
+                    <div class="input-group">
+                        <label for="userWhatsapp">Seu WhatsApp</label>
+                        <input type="tel" id="userWhatsapp" required placeholder="(XX) XXXXX-XXXX">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Reservar e Pagar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- ONG Highlight Section --- -->
+    <section class="ong-banner-section container pt-4">
+        <div class="ong-banner text-center">
+            <i class="ph ph-instagram-logo ong-icon"></i>
+            <div class="ong-text">
+                <h3>Casa dos Anjos</h3>
+                <p>Nossa família felina vai para esta ONG maravilhosa em Macaé. Conheça e apoie o trabalho incrível
+                    deles!</p>
+            </div>
+            <a href="https://instagram.com/adote.casadosanjos" target="_blank" class="btn btn-ong">
+                <i class="ph-bold ph-instagram-logo"></i> @adote.casadosanjos
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p class="footer-msg">"Se não puder ajudar comprando um número, nos ajude compartilhando o link desta
+                página! Muito obrigado."</p>
+            <div class="share-actions">
+                <button class="btn btn-outline" id="btnShareList">
+                    <i class="ph-bold ph-share-network"></i> Compartilhar Ajuda
+                </button>
+            </div>
+            <p class="copyright">Rifa Solidária: Operação Macaé &copy; 2026</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
